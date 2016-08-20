@@ -20,7 +20,12 @@ public class LoginForm {
 
     public List<ValidationError> validate() {
         List<ValidationError> errors = new ArrayList<>();
-        User user = User.authenticate("email", email); /* in "email" column , check if email already exists*/
+        User user = User.authenticate("email", email);* in "email" column , check if email already exists*/
+        if(user == null)
+        {
+            errors.add(new ValidationError("message", "Email already exists"));
+            errors.add(new ValidationError("error","true")); /
+        }
         return errors;
     }
 
