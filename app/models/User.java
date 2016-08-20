@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.*;
 import java.util.List;
@@ -40,4 +41,16 @@ public class User extends Model{
 
     )
     public Set<User> connections;  /*set coz unique connections s wats reqd */
+
+    public static Finder<Long, User> find= new Finder<Long, User>(User.class);/* the Id we r searching for is of Long type */
+
+    public static User authenticate(String email,String password) {
+        User user = User.find.where().eq("email",email).findUnique();
+    if(user != null && BCrypt.checkpw(password,user.password)) /* password(plain text at client) is compared to user.password(encrypted at server DB) */
+    {
+        return user;
+    }
+    return null;
 }
+
+public static User authorization(String authString){...}
