@@ -20,7 +20,7 @@ public class LoginForm {
 
     public List<ValidationError> validate() {
         List<ValidationError> errors = new ArrayList<>();
-        User user = User.authenticate("email", email);* in "email" column , check if email already exists*/
+        User user = User.authenticate("email", email); /* in "email" column , check if email already exists*/
         if(user == null)
         {
             errors.add(new ValidationError("message", "Email already exists"));
@@ -35,5 +35,13 @@ public class LoginForm {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
