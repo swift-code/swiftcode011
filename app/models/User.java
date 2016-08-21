@@ -11,7 +11,7 @@ import java.util.Set;
  * Created by lubuntu on 8/20/16.
  */
 @Entity
-public class User extends Model{
+public class User extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
@@ -30,27 +30,30 @@ public class User extends Model{
     public Profile profile;
 
     @ManyToMany
-    @JoinTable(name ="user_connecions",
+    @JoinTable(name = "user_connecions",
             joinColumns = {
-            @JoinColumn(name ="user_id") /*forward reference */
-             },
+                    @JoinColumn(name = "user_id") /*forward reference */
+            },
             inverseJoinColumns =     /*backward reference */
                     {
-                    @JoinColumn (name = "connection_id")
+                            @JoinColumn(name = "connection_id")
                     }
 
     )
     public Set<User> connections;  /*set coz unique connections s wats reqd */
 
-    public static Finder<Long, User> find= new Finder<Long, User>(User.class);/* the Id we r searching for is of Long type */
+    public static Finder<Long, User> find = new Finder<Long, User>(User.class);/* the Id we r searching for is of Long type */
 
-    public static User authenticate(String email,String password) {
-        User user = User.find.where().eq("email",email).findUnique();
-    if(user != null && BCrypt.checkpw(password,user.password)) /* password(plain text at client) is compared to user.password(encrypted at server DB) */
-    {
-        return user;
+    public static User authenticate(String email, String password) {
+        User user = User.find.where().eq("email", email).findUnique();
+        if (user != null && BCrypt.checkpw(password, user.password)) /* password(plain text at client) is compared to user.password(encrypted at server DB) */ {
+            return user;
+        }
+        return null;
     }
-    return null;
-}
 
-public static User authorization(String authString){...}
+    public User(String email, String password) {
+        this.email = email;
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+}

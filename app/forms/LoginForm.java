@@ -15,16 +15,16 @@ public class LoginForm {
     @Constraints.Required
     public String email;
 
-    Constraints.Required
+    @Constraints.Required
     public String password;
 
     public List<ValidationError> validate() {
         List<ValidationError> errors = new ArrayList<>();
-        User user = User.authenticate("email", email); /* in "email" column , check if email already exists*/
+        User user = User.authenticate(email, password); /* in "email" column , check if email already exists*/
         if(user == null)
         {
-            errors.add(new ValidationError("message", "Email already exists"));
-            errors.add(new ValidationError("error","true")); /
+            errors.add(new ValidationError("message", "invalid Email / password"));
+            errors.add(new ValidationError("error","true"));
         }
         return errors;
     }
